@@ -4,12 +4,19 @@ package com.example.demo1.controller;
 import com.example.demo1.entity.Response;
 import com.example.demo1.entity.User;
 import com.example.demo1.service.UserService;
+import com.example.demo1.utils.TokenUtils;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 
 //RestController responseBody和controller的结合
 
@@ -65,7 +72,7 @@ public class UserInfo {
             return res;
         }
         List<User> users = service.queryByUserInfo(account);
-        res.getUserList(200,users,"获取成功");
+        res.getUserList(200, (Map) users,"获取成功");
         return res;
     }
 
@@ -75,7 +82,7 @@ public class UserInfo {
      * @return
      */
     @RequestMapping("/login")
-    public Response login(@RequestBody Map<String, String> person) {
+    public Response login(@RequestBody Map<String, String> person) throws JSONException {
         Response res = new Response();
         String account = person.get("account");
         String password = person.get("password");
@@ -89,16 +96,20 @@ public class UserInfo {
         if(isMatch) {
             List <User> userList = service.queryByUserInfoAndPw(account);
             if(userList != null && userList.size() > 0) {
-                User userInfo = userList.get(0);
-                String psw = userInfo.getPassword();
-                String act = userInfo.getAccount();
-                System.out.println(psw + " " + password +"密码");
+                User userObj = userList.get(0);
+                String psw = userObj.getPassword();
+                String act = userObj.getAccount();
+                String name = userObj.getName();
 
                 if(psw.equals(password) && act.equals(account)) {
+
+                    // 生成token 信息
+                    TokenUtils utils = new TokenUtils();
+                    String token = utils.createJwtToken(name,account);
                     res.setMsg("登录成功");
                     res.setCode(200);
-                    // 生成token 信息
-                    res.setResult("akskakakjfakjlas");
+                    System.out.println(token);
+                    res.getTokenResult(token);
                     return res;
                 }
             }
