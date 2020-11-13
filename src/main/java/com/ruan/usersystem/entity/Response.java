@@ -1,4 +1,4 @@
-package com.example.demo1.entity;
+package com.ruan.usersystem.entity;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

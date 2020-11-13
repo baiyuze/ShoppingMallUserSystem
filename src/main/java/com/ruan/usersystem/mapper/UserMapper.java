@@ -1,6 +1,6 @@
-package com.example.demo1.mapper;
+package com.ruan.usersystem.mapper;
 
-import com.example.demo1.entity.User;
+import com.ruan.usersystem.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

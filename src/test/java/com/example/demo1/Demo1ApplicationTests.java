@@ -1,10 +1,10 @@
-package com.example.demo1;
+package com.ruan.usersystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Demo1ApplicationTests {
+class UserSystemApplicationTests {
 
     @Test
     void contextLoads() {

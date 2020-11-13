@@ -1,10 +1,10 @@
-package com.example.demo1.controller;
+package com.ruan.usersystem.controller;
 
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.example.demo1.entity.Response;
-import com.example.demo1.entity.User;
-import com.example.demo1.service.UserService;
-import com.example.demo1.utils.TokenUtils;
+import com.ruan.usersystem.entity.Response;
+import com.ruan.usersystem.entity.User;
+import com.ruan.usersystem.service.UserService;
+import com.ruan.usersystem.utils.TokenUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

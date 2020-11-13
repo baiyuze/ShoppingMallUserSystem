@@ -1,4 +1,4 @@
-package com.example.demo1.utils;
+package com.ruan.usersystem.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

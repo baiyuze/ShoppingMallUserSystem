@@ -1,7 +1,7 @@
-package com.example.demo1.service;
+package com.ruan.usersystem.service;
 
-import com.example.demo1.controller.UserInfo;
-import com.example.demo1.entity.User;
+import com.ruan.usersystem.controller.UserInfo;
+import com.ruan.usersystem.entity.User;
 
 import java.util.List;
 

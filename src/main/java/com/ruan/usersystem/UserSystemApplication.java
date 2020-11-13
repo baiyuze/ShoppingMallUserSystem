@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.ruan.usersystem;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +14,7 @@ import java.util.Date;
 
 //@RestController
 @SpringBootApplication
-public class Demo1Application {
+public class UserSystemApplication {
     @Value("${name}")
     private String myName;
 //    @RequestMapping(value="test", method = RequestMethod.GET)
@@ -24,9 +24,8 @@ public class Demo1Application {
 //        return "<script>window.a = {a: \"+name+\"};alert('"+myName+"');</script>";
 //    }
     public static void main(String[] args) {
-        System.out.println("猪猪测试122121" ); // 打印 Hello World
         System.out.println(args); // 打印 Hello World
-        SpringApplication.run(Demo1Application.class, args);
+        SpringApplication.run(UserSystemApplication.class, args);
     }
 
 }

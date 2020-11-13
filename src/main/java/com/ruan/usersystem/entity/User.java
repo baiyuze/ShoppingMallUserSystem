@@ -1,4 +1,4 @@
-package com.example.demo1.entity;
+package com.ruan.usersystem.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
