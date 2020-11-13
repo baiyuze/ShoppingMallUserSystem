@@ -6,7 +6,7 @@ import java.util.Map;
 public class Response {
     String msg;
     int code;
-    Map result= new HashMap();
+    Map<String, Object> result= new HashMap();
 
     public Map getResult() {
         return result;
@@ -32,15 +32,18 @@ public class Response {
         this.code = code;
     }
 
-    public void getUserList(int code, Map result, String msg) {
+    public void getUserList(int code, List result, String msg) {
         this.code = code;
-        this.result = result;
+        this.result.put("data",result);
         this.msg = msg;
     }
 
-    public void getTokenResult(String token) {
-        System.out.println(token);
+    public void getTokenResult(String token, User userObject) {
+        String name = userObject.getName();
+        String account = userObject.getAccount();
         this.result.put("token",token);
+        this.result.put("name", name);
+        this.result.put("account", account);
     }
 
 

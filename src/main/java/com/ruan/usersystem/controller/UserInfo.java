@@ -36,6 +36,7 @@ public class UserInfo {
         String name = person.get("name");
         String password = person.get("password");
         String msg = "注册成功";
+
         int code = 200;
         Response res = new Response();
 
@@ -54,7 +55,7 @@ public class UserInfo {
 
         res.setMsg(msg);
         res.setCode(code);
-        System.out.println(person);
+        res.setResult(null);
         return res;
     }
 
@@ -71,8 +72,8 @@ public class UserInfo {
             res.setCode(400);
             return res;
         }
-        List<User> users = service.queryByUserInfo(account);
-        res.getUserList(200, (Map) users,"获取成功");
+        List <User> users = service.queryByUserInfo(account);
+        res.getUserList(200,(List) users,"获取成功");
         return res;
     }
 
@@ -100,16 +101,14 @@ public class UserInfo {
                 String psw = userObj.getPassword();
                 String act = userObj.getAccount();
                 String name = userObj.getName();
-
+                System.out.println(userObj);
                 if(psw.equals(password) && act.equals(account)) {
-
                     // 生成token 信息
                     TokenUtils utils = new TokenUtils();
                     String token = utils.createJwtToken(name,account);
                     res.setMsg("登录成功");
                     res.setCode(200);
-                    System.out.println(token);
-                    res.getTokenResult(token);
+                    res.getTokenResult(token,userObj);
                     return res;
                 }
             }
