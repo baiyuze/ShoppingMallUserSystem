@@ -7,6 +7,7 @@ import com.ruan.usersystem.service.UserService;
 import com.ruan.usersystem.utils.TokenUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,8 @@ import org.json.JSONObject;
 public class UserInfo {
     @Autowired
     UserService service;
-
+    @Value("${jwt.secretString}")
+    private String secretString;
     /***
      * 注册
      * @param person
@@ -65,16 +67,30 @@ public class UserInfo {
      * @return
      */
     @RequestMapping("/getUserInfo")
-    public Response queryByUsername(String account) {
+
+    public Response queryByUsername(@RequestHeader ("Authorization") String jwt,String account) {
+        TokenUtils utils = new TokenUtils();
+        String accountJwt =  utils.decryptJwt(jwt);
         Response res = new Response();
-        if(account == null || account == "") {
-            res.setMsg("account参数不能为空");
-            res.setCode(400);
+        if(accountJwt != null) {
+            if(account == null || account == "") {
+                res.setMsg("account参数不能为空");
+                res.setCode(400);
+                return res;
+            }
+
+            List <User> users = service.queryByUserInfo(account);
+
+            res.getUserList(200,(List) users,"获取成功");
+            return res;
+        } else {
+            res.setMsg("token校验失败");
+            res.setCode(500);
+            res.setResult(null);
             return res;
         }
-        List <User> users = service.queryByUserInfo(account);
-        res.getUserList(200,(List) users,"获取成功");
-        return res;
+
+
     }
 
     /***
@@ -82,8 +98,10 @@ public class UserInfo {
      * @param person
      * @return
      */
+
     @RequestMapping("/login")
     public Response login(@RequestBody Map<String, String> person) throws JSONException {
+
         Response res = new Response();
         String account = person.get("account");
         String password = person.get("password");
