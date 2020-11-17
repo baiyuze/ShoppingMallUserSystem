@@ -1,6 +1,7 @@
 package com.ruan.usersystem.controller;
 
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.ruan.usersystem.config.LoginRequired;
 import com.ruan.usersystem.entity.Response;
 import com.ruan.usersystem.entity.User;
 import com.ruan.usersystem.service.UserService;
@@ -67,30 +68,18 @@ public class UserInfo {
      * @return
      */
     @RequestMapping("/getUserInfo")
-
-    public Response queryByUsername(@RequestHeader ("Authorization") String jwt,String account) {
-        TokenUtils utils = new TokenUtils();
-        String accountJwt =  utils.decryptJwt(jwt);
+    @LoginRequired
+    public Response queryByUsername(String account) {
         Response res = new Response();
-        if(accountJwt != null) {
-            if(account == null || account == "") {
-                res.setMsg("account参数不能为空");
-                res.setCode(400);
-                return res;
-            }
-
-            List <User> users = service.queryByUserInfo(account);
-
-            res.getUserList(200,(List) users,"获取成功");
-            return res;
-        } else {
-            res.setMsg("token校验失败");
-            res.setCode(500);
-            res.setResult(null);
+        if(account == null || account == "") {
+            res.setMsg("account参数不能为空");
+            res.setCode(400);
             return res;
         }
+        List <User> users = service.queryByUserInfo(account);
 
-
+        res.getUserList(200,(List) users,"获取成功");
+        return res;
     }
 
     /***
@@ -119,11 +108,12 @@ public class UserInfo {
                 String psw = userObj.getPassword();
                 String act = userObj.getAccount();
                 String name = userObj.getName();
+                int userId = userObj.getId();
                 System.out.println(userObj);
                 if(psw.equals(password) && act.equals(account)) {
                     // 生成token 信息
                     TokenUtils utils = new TokenUtils();
-                    String token = utils.createJwtToken(name,account);
+                    String token = utils.createJwtToken(name,account,userId);
                     res.setMsg("登录成功");
                     res.setCode(200);
                     res.getTokenResult(token,userObj);

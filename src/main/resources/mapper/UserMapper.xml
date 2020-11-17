@@ -19,6 +19,6 @@
         SELECT account, name,id, email FROM `user` where account = #{account}
     </select >
     <select id="queryByUserInfoAndPw" resultType="com.ruan.usersystem.entity.User">
-        SELECT account, password, name, email, detail_address  FROM user where account = #{account}
+        SELECT account, password, name, email, detail_address,id  FROM user where account = #{account}
     </select >
 </mapper>

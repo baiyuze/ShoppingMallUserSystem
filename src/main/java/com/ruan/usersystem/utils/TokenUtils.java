@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TokenUtils {
+    private Map<String, Object> userInfo = new HashMap();
     private String secretString = "f0AmRwNStJF4M1EnWTMs/IfGBJ3gSIY04GSxA8me8IU=";
     // jti：jwt的唯一身份标识
     public static final String JWT_ID = UUID.randomUUID().toString();
@@ -43,28 +44,32 @@ public class TokenUtils {
      * @param account
      * @return
      */
-    public String createJwtToken(String name, String account)  {
+    public String createJwtToken(String name, String account,int userId)  {
         Date date = new Date();
         long t = date.getTime() + 60 * 60 * 2 * 1000;
         Date exp = new Date(t);
         SecretKey key = generalKey();
-        System.out.println(key + "====1===="+ exp);
+
         String jws = Jwts.builder()
                 .setExpiration(exp)
                 .claim("name", name)
                 .claim("account", account)
+                .claim("userId",userId)
                 .signWith(key).compact();
 
 
         return jws;
     }
-    public String decryptJwt(String compactJws) {
+    public Map<String, Object> decryptJwt(String compactJws) {
         SecretKey key = generalKey();
 
         try {
             Claims claims =  Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(compactJws).getBody();
+            String userId = claims.get("userId").toString();
             String account = claims.get("account").toString();
-            return account;
+            userInfo.put("userId", userId);
+            userInfo.put("account", account);
+            return userInfo;
         } catch (JwtException e) {
             return null;
         }
