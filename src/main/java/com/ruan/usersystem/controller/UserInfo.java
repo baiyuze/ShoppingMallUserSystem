@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 //RestController responseBody和controller的结合
@@ -69,13 +70,16 @@ public class UserInfo {
      */
     @RequestMapping("/getUserInfo")
     @LoginRequired
-    public Response queryByUsername(String account) {
+    public Response queryByUsername(HttpServletRequest request,String account) {
         Response res = new Response();
+
         if(account == null || account == "") {
             res.setMsg("account参数不能为空");
             res.setCode(400);
             return res;
         }
+        Object userInfo = request.getAttribute("userInfo");
+        System.out.println(userInfo + "============");
         List <User> users = service.queryByUserInfo(account);
 
         res.getUserList(200,(List) users,"获取成功");

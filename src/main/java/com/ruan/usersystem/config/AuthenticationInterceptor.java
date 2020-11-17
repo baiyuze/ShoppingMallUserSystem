@@ -58,7 +58,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return false;
             } else {
                 // token校验成功，读取用户数据
-                request.setAttribute("userId", 12132);
+                request.setAttribute("userInfo", userInfo);
                 return true;
             }
         }
