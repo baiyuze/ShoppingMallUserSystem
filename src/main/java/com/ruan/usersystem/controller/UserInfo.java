@@ -76,14 +76,13 @@ public class UserInfo {
     @LoginRequired
     public Response queryByUsername(HttpServletRequest request,String account) {
         Response res = new Response();
-
-        if(account == null || account == "") {
-            res.setMsg("account参数不能为空");
-            res.setCode(400);
-            return res;
-        }
         Object userInfo = request.getAttribute("userInfo");
         List <User> users = service.queryByUserInfo(account);
+        if(account == null || account == "") {
+            res.getUserList(200,(List) users,"获取成功");
+            return res;
+        }
+
 
         res.getUserList(200,(List) users,"获取成功");
         return res;
@@ -108,7 +107,7 @@ public class UserInfo {
         }
         String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[\\s\\S]{8,16}$";
         boolean isMatch = Pattern.matches(pattern, password);
-        if(isMatch) {
+        if(password != null && !password.isEmpty()) {
             List <User> userList = service.queryByUserInfoAndPw(account);
             if(userList != null && userList.size() > 0) {
                 User userObj = userList.get(0);
