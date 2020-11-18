@@ -11,6 +11,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TokenUtils {
+
     private Map<String, Object> userInfo = new HashMap();
     private String secretString = "f0AmRwNStJF4M1EnWTMs/IfGBJ3gSIY04GSxA8me8IU=";
     // jti：jwt的唯一身份标识

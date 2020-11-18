@@ -9,6 +9,7 @@ import com.ruan.usersystem.utils.TokenUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 public class UserInfo {
     @Autowired
     UserService service;
+    @Autowired
+    StringRedisTemplate redisTemplate;
+
     @Value("${jwt.secretString}")
     private String secretString;
     /***
@@ -79,7 +83,6 @@ public class UserInfo {
             return res;
         }
         Object userInfo = request.getAttribute("userInfo");
-        System.out.println(userInfo + "============");
         List <User> users = service.queryByUserInfo(account);
 
         res.getUserList(200,(List) users,"获取成功");
@@ -120,6 +123,8 @@ public class UserInfo {
                     String token = utils.createJwtToken(name,account,userId);
                     res.setMsg("登录成功");
                     res.setCode(200);
+                    String userString = act + userId;
+                    redisTemplate.opsForValue().set(userString, token);
                     res.getTokenResult(token,userObj);
                     return res;
                 }
