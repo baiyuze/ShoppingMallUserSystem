@@ -17,11 +17,11 @@
 <!--    </select>-->
     <select id="queryByUserInfo" parameterType="String" resultType="com.ruan.usersystem.entity.User">
         SELECT account, name,id, email FROM `user`
-<!--        <where>-->
-<!--            <if test="account != null">-->
-<!--                account = #{account}-->
-<!--            </if>-->
-<!--        </where>-->
+        <where>
+            <if test="account != null">
+                account = #{account}
+            </if>
+        </where>
 
 <!--        <where>-->
 <!--            <if test="account != null">-->

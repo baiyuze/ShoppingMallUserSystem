@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,9 +31,6 @@ public class UserInfo {
     UserService service;
     @Autowired
     StringRedisTemplate redisTemplate;
-
-    @Value("${jwt.secretString}")
-    private String secretString;
     /***
      * 注册
      * @param person
@@ -94,7 +92,7 @@ public class UserInfo {
      * @return
      */
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestBody Map<String, String> person) throws JSONException {
 
         Response res = new Response();
@@ -123,7 +121,7 @@ public class UserInfo {
                     res.setMsg("登录成功");
                     res.setCode(200);
                     String userString = act + userId;
-                    redisTemplate.opsForValue().set(userString, token);
+                    redisTemplate.opsForValue().set(userString, token, 30, TimeUnit.MINUTES);
                     res.getTokenResult(token,userObj);
                     return res;
                 }
@@ -137,5 +135,42 @@ public class UserInfo {
             return res;
         }
 
+    }
+
+    @RequestMapping(value = "/loginOut",method=RequestMethod.POST)
+    public Response loginOut(@RequestHeader("Authorization") String token) {
+        TokenUtils utils = new TokenUtils();
+        Response res = new Response();
+        Map userInfo = utils.decryptJwt(token);
+//            token 校验失败
+        if (userInfo == null) {
+            res.setCode(400);
+            res.setMsg("token已经失效，请直接登录");
+            res.setResult(null);
+        } else {
+            String userId = userInfo.get("userId").toString();
+            String account = userInfo.get("account").toString();
+            String redisToken = redisTemplate.opsForValue().get(account + userId);
+
+            if(redisToken == null) {
+                res.setCode(400);
+                res.setMsg("token已经失效，请直接登录");
+                res.setResult(null);
+            } else {
+
+                Boolean s = redisTemplate.delete(account + userId);
+                if(s) {
+                    res.setCode(200);
+                    res.setMsg("退出成功");
+                    res.setResult(null);
+                } else {
+                    res.setCode(400);
+                    res.setMsg("退出失败，redis删除失败");
+                    res.setResult(null);
+                }
+
+            }
+        }
+        return res;
     }
 }

@@ -2,6 +2,7 @@ package com.ruan.usersystem.mapper;
 
 import com.ruan.usersystem.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface UserMapper {
      * @param account
      * @return
      */
-    List <User> queryByUserInfo(String account);
+    List <User> queryByUserInfo(@Param("account") String account );
 
     /***
      * 获取含有密码的账户

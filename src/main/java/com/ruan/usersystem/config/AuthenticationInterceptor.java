@@ -54,6 +54,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     return false;
                 }
                 request.setAttribute("userInfo", userInfo);
+
                 return true;
             }
         }
