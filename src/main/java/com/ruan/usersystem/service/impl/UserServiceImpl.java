@@ -16,8 +16,8 @@ public class UserServiceImpl implements UserService {
         User user = new User(account,name,password);
         userMapper.inSertUser(user);
     }
-    public List <User> queryByUserInfo(String account) {
-        List <User> userList = userMapper.queryByUserInfo(account);
+    public List <User> queryByUserInfo(String account, Integer pageSize,Integer pageNum) {
+        List <User> userList = userMapper.queryByUserInfo(account,pageSize,pageNum);
         return userList;
     }
 

@@ -22,7 +22,9 @@ public interface UserMapper {
      * @param account
      * @return
      */
-    List <User> queryByUserInfo(@Param("account") String account );
+    List<User> queryByUserInfo(String account, Integer pageSize, Integer pageNum);
+
+//    List <User> queryByUserInfo(@Param("account") String account );
 
     /***
      * 获取含有密码的账户

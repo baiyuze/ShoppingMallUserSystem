@@ -47,7 +47,7 @@ public class UserInfo {
         Response res = new Response();
 
         if(account != null && account != ""  && name != null && password != null) {
-            List<User> users = service.queryByUserInfo(account);
+            List<User> users = service.queryByUserInfo(account,10,1);
             if(users.size() >0) {
                 msg = "当前账号已经使用，请重新输入";
                 code = 400;
@@ -72,10 +72,16 @@ public class UserInfo {
      */
     @RequestMapping("/getUserInfo")
     @LoginRequired
-    public Response queryByUsername(HttpServletRequest request,String account) {
+    public Response queryByUsername(HttpServletRequest request,String account, Integer pageSize, Integer pageNum) {
+        if(pageSize == null) {
+            pageSize = 20;
+        }
+        if(pageNum == null) {
+            pageNum = 1;
+        }
         Response res = new Response();
         Object userInfo = request.getAttribute("userInfo");
-        List <User> users = service.queryByUserInfo(account);
+        List <User> users = service.queryByUserInfo(account,pageSize,pageNum);
         if(account == null || account == "") {
             res.getUserList(200,(List) users,"获取成功");
             return res;
@@ -137,6 +143,11 @@ public class UserInfo {
 
     }
 
+    /***
+     * 登出接口--post
+     * @param token
+     * @return
+     */
     @RequestMapping(value = "/loginOut",method=RequestMethod.POST)
     public Response loginOut(@RequestHeader("Authorization") String token) {
         TokenUtils utils = new TokenUtils();

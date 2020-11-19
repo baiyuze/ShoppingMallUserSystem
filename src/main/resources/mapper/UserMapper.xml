@@ -15,22 +15,14 @@
 <!--    <select id="getName" parameterType="com.ruan.usersystem.entity.User" resultType="com.ruan.usersystem.entity.User">-->
 <!--      SELECT * FROM user WHERE name = #{name}-->
 <!--    </select>-->
-    <select id="queryByUserInfo" parameterType="String" resultType="com.ruan.usersystem.entity.User">
-        SELECT account, name,id, email FROM `user`
+    <select id="queryByUserInfo" resultType="com.ruan.usersystem.entity.User">
+        SELECT account, name,id, email FROM user
         <where>
             <if test="account != null">
                 account = #{account}
             </if>
         </where>
-
-<!--        <where>-->
-<!--            <if test="account != null">-->
-<!--                account = #{account}-->
-<!--            </if>-->
-<!--            <if test="account == null">-->
-<!--                account = #{account}-->
-<!--            </if>-->
-<!--        </where>-->
+        ORDER BY id ASC LIMIT ${(pageNum - 1) * pageSize}, ${pageSize}
     </select >
     <select id="queryByUserInfoAndPw" resultType="com.ruan.usersystem.entity.User">
         SELECT account, password, name, email, detail_address,id  FROM user where account = #{account}
