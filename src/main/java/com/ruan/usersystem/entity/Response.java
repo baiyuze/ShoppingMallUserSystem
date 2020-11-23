@@ -32,9 +32,12 @@ public class Response {
         this.code = code;
     }
 
-    public void getUserList(int code, List result, String msg) {
+    public void getUserList(int code, List data, String msg, int pageSize , int pageNum,int total) {
         this.code = code;
-        this.result.put("data",result);
+        this.result.put("data",data);
+        this.result.put("pageSize",pageSize);
+        this.result.put("pageNum",pageNum);
+        this.result.put("total",total);
         this.msg = msg;
     }
 

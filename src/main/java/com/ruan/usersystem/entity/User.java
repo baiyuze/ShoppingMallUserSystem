@@ -16,6 +16,8 @@ public class User {
     private String name;
     private String detailAddress;
     private String email;
+    public Integer total;
+
     public User() {};
     public User(String account, String name, String password) {
         this.account = account;
@@ -83,6 +85,18 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+    /**
+     * 获取总数
+     *
+     * @return*/
+    public Integer getTotal(Integer total) {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+         this.total = total;
+    }
+
 
     @Override
     public String toString(){

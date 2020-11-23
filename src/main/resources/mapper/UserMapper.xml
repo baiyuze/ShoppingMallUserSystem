@@ -7,14 +7,11 @@
         <result column="account" jdbcType="VARCHAR" property="account"/>
         <result column="detail_address" jdbcType="VARCHAR" property="detail_address"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-
+<!--        <result column="total" property="total" jdbcType="INTEGER" />-->
     </resultMap>
     <insert id="inSertUser" parameterType="com.ruan.usersystem.entity.User">
         INSERT INTO user(account,name,password) VALUES(#{account},#{name},#{password})
     </insert>
-<!--    <select id="getName" parameterType="com.ruan.usersystem.entity.User" resultType="com.ruan.usersystem.entity.User">-->
-<!--      SELECT * FROM user WHERE name = #{name}-->
-<!--    </select>-->
     <select id="queryByUserInfo" resultType="com.ruan.usersystem.entity.User">
         SELECT account, name,id, email FROM user
         <where>
@@ -23,6 +20,9 @@
             </if>
         </where>
         ORDER BY id ASC LIMIT ${(pageNum - 1) * pageSize}, ${pageSize}
+    </select >
+    <select id="getTotal" resultType="Integer">
+        SELECT COUNT(id) as total FROM user
     </select >
     <select id="queryByUserInfoAndPw" resultType="com.ruan.usersystem.entity.User">
         SELECT account, password, name, email, detail_address,id  FROM user where account = #{account}

@@ -82,13 +82,8 @@ public class UserInfo {
         Response res = new Response();
         Object userInfo = request.getAttribute("userInfo");
         List <User> users = service.queryByUserInfo(account,pageSize,pageNum);
-        if(account == null || account == "") {
-            res.getUserList(200,(List) users,"获取成功");
-            return res;
-        }
-
-
-        res.getUserList(200,(List) users,"获取成功");
+        Integer total = service.getTotal("user");
+        res.getUserList(200,(List) users,"获取成功", pageNum, pageSize,total);
         return res;
     }
 

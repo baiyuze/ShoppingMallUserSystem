@@ -24,8 +24,9 @@ public interface UserMapper {
      */
     List<User> queryByUserInfo(String account, Integer pageSize, Integer pageNum);
 
-//    List <User> queryByUserInfo(@Param("account") String account );
+    Integer getTotal(String tableName);
 
+//    List <User> queryByUserInfo(@Param("account") String account );
     /***
      * 获取含有密码的账户
      * @param account

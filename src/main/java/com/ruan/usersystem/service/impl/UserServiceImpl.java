@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    public Integer getTotal(String tableName){
+        Integer total = userMapper.getTotal(tableName);
+        return total;
+    }
+
     /***
      * 获取用户信息
      * @param account
