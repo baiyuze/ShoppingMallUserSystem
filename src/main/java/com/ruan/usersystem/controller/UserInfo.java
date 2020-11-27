@@ -6,6 +6,8 @@ import com.ruan.usersystem.entity.Response;
 import com.ruan.usersystem.entity.User;
 import com.ruan.usersystem.service.UserService;
 import com.ruan.usersystem.utils.TokenUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+//import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -31,6 +32,7 @@ public class UserInfo {
     UserService service;
     @Autowired
     StringRedisTemplate redisTemplate;
+    private static Logger logger = LogManager.getLogger(UserInfo.class.getName());
     /***
      * 注册
      * @param person
@@ -82,7 +84,7 @@ public class UserInfo {
         Response res = new Response();
         Object userInfo = request.getAttribute("userInfo");
         List <User> users = service.queryByUserInfo(account,pageSize,pageNum);
-        Integer total = service.getTotal("user");
+        Integer total = service.getTotal(account);
         res.getUserList(200,(List) users,"获取成功", pageNum, pageSize,total);
         return res;
     }
@@ -177,6 +179,36 @@ public class UserInfo {
 
             }
         }
+        return res;
+    }
+
+    /***
+     * 删除用户，更新用户节点status状态，1--已删除，1--账号删除
+     * @param body
+     * @return
+     */
+    @RequestMapping(value = "/removeUser", method = RequestMethod.DELETE)
+    @LoginRequired
+    public Response removeUser(@RequestBody Map<String, Integer> body) {
+        Integer userId = body.get("userId");
+        Response res = new Response();
+        int code = 200;
+        String msg = "删除成功";
+
+        if(userId == null) {
+            code = 400;
+            msg = "userId不能为null";
+        }
+        try {
+            int val = service.setUserStatus(userId);
+            logger.info("我是测试一下信息");
+            logger.error("我是测试一下==信息");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        res.setResult(null);
+        res.setMsg(msg);
+        res.setCode(code);
         return res;
     }
 }

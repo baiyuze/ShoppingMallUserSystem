@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
-    public Integer getTotal(String tableName){
-        Integer total = userMapper.getTotal(tableName);
+    public Integer getTotal(String account){
+        Integer total = userMapper.getTotal(account);
         return total;
     }
 
@@ -34,6 +34,9 @@ public class UserServiceImpl implements UserService {
     public List <User> queryByUserInfoAndPw(String account) {
         List <User> userList = userMapper.queryByUserInfoAndPw(account);
         return userList;
+    }
+    public Integer setUserStatus(Integer userId) {
+       return userMapper.setUserStatus(userId);
     }
 }
 

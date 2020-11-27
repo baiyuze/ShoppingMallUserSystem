@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface UserService {
    public void inSertUser(String account, String name, String password);
-   public Integer getTotal(String tableName);
+   public Integer getTotal(@Param("account") String account);
+   public Integer setUserStatus(Integer userId);
    List<User> queryByUserInfo(@Param("account") String account,@Param("pageSize") Integer pageSize,@Param("pageNum") Integer pageNum);
    List<User> queryByUserInfoAndPw(String account);
 }

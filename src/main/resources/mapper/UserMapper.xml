@@ -7,7 +7,6 @@
         <result column="account" jdbcType="VARCHAR" property="account"/>
         <result column="detail_address" jdbcType="VARCHAR" property="detail_address"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-<!--        <result column="total" property="total" jdbcType="INTEGER" />-->
     </resultMap>
     <insert id="inSertUser" parameterType="com.ruan.usersystem.entity.User">
         INSERT INTO user(account,name,password) VALUES(#{account},#{name},#{password})
@@ -21,10 +20,19 @@
         </where>
         ORDER BY id ASC LIMIT ${(pageNum - 1) * pageSize}, ${pageSize}
     </select >
-    <select id="getTotal" resultType="Integer">
+    <select id="getTotal" parameterType="String" resultType="Integer">
         SELECT COUNT(id) as total FROM user
+        <where>
+            <if test="account != null">
+                account = #{account}
+            </if>
+        </where>
     </select >
     <select id="queryByUserInfoAndPw" resultType="com.ruan.usersystem.entity.User">
         SELECT account, password, name, email, detail_address,id  FROM user where account = #{account}
     </select >
+<!--    修改表字段 update-->
+    <update id="setUserStatus" timeout="20" >
+        UPDATE `user` SET status = 1 WHERE id = #{userId}
+    </update>
 </mapper>

@@ -24,7 +24,7 @@ public interface UserMapper {
      */
     List<User> queryByUserInfo(String account, Integer pageSize, Integer pageNum);
 
-    Integer getTotal(String tableName);
+    Integer getTotal(@Param("account") String account);
 
 //    List <User> queryByUserInfo(@Param("account") String account );
     /***
@@ -33,6 +33,8 @@ public interface UserMapper {
      * @return
      */
     List <User> queryByUserInfoAndPw(String account);
+
+    Integer setUserStatus(@Param("userId") Integer userId);
 
 }
 
