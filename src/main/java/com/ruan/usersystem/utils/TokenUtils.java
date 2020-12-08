@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TokenUtils {
-
+    @Autowired
     private Map<String, Object> userInfo = new HashMap();
     private String secretString = "f0AmRwNStJF4M1EnWTMs/IfGBJ3gSIY04GSxA8me8IU=";
     // jti：jwt的唯一身份标识
@@ -53,8 +53,9 @@ public class TokenUtils {
         SecretKey key = generalKey();
 
         String jws = Jwts.builder()
-                .setExpiration(exp)
+//                .setExpiration(exp)
                 .claim("name", name)
+                .claim("exp", t)
                 .claim("account", account)
                 .claim("userId",userId)
                 .signWith(key).compact();

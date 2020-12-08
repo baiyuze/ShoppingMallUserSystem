@@ -17,14 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private UserService userService;
     @Autowired
     StringRedisTemplate redisTemplate;
+    long time =  60 * 60 * 2 * 1000;
     @Override
     //在Controller执行之前调用，如果返回false，controller不执行
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -40,7 +43,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             String token = request.getHeader("Authorization");
             TokenUtils utils = new TokenUtils();
             Map userInfo = utils.decryptJwt(token);
-//            token 校验失败
+            //            token 校验失败
             if (userInfo == null) {
                 reponeseData(response,1);
                 return false;
@@ -48,13 +51,27 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 // token校验成功，读取用户数据
                 String userId = userInfo.get("userId").toString();
                 String act = userInfo.get("account").toString();
+                String userTokenExp = act + userId + "exp";
                 String userToken = redisTemplate.opsForValue().get(act + userId);
-                if(userToken == null || userToken.isEmpty()) {
+                long currentTime = new Date().getTime();
+                String userExpTimeRedis = redisTemplate.opsForValue().get(userTokenExp);
+                if(userExpTimeRedis == null || userToken == null || userToken.isEmpty()) {
                     reponeseData(response, 2);
                     return false;
+                } else {
+                    long userExpTime = Long.parseLong(userExpTimeRedis);
+                    System.out.println(currentTime+"====="+userExpTime+"currentTime - userExpTime) <= 60 * 1000");
+                    if((userExpTime - currentTime) <= 60 * 1000) {
+                        Date date = new Date();
+                        long t = date.getTime() + time;
+                        // 更新redis过期时间
+                        redisTemplate.opsForValue().set(userTokenExp, Long.toString(t),time, TimeUnit.MILLISECONDS);
+                    }
                 }
-                request.setAttribute("userInfo", userInfo);
+                //  过期时间，如果还有一分钟即将过期，则更新过期时间
 
+
+                request.setAttribute("userInfo", userInfo);
                 return true;
             }
         }

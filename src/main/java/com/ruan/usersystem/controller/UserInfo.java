@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,7 @@ public class UserInfo {
     UserService service;
     @Autowired
     StringRedisTemplate redisTemplate;
+    long time = 60 * 60 * 2 * 1000;
     private static Logger logger = LogManager.getLogger(UserInfo.class.getName());
     /***
      * 注册
@@ -97,6 +99,8 @@ public class UserInfo {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestBody Map<String, String> person) throws JSONException {
+        Date date = new Date();
+        long t = date.getTime() + 60 * 60 * 2 * 1000;
 
         Response res = new Response();
         String account = person.get("account");
@@ -124,7 +128,9 @@ public class UserInfo {
                     res.setMsg("登录成功");
                     res.setCode(200);
                     String userString = act + userId;
+                    String userTokenExp = userString + "exp";
                     redisTemplate.opsForValue().set(userString, token, 30, TimeUnit.MINUTES);
+                    redisTemplate.opsForValue().set(userTokenExp, Long.toString(t),time,TimeUnit.MILLISECONDS);
                     res.getTokenResult(token,userObj);
                     return res;
                 }
@@ -201,8 +207,6 @@ public class UserInfo {
         }
         try {
             int val = service.setUserStatus(userId);
-            logger.info("我是测试一下信息");
-            logger.error("我是测试一下==信息");
         } catch (Exception e) {
             e.printStackTrace();
         }
