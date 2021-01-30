@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-//import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -87,7 +84,7 @@ public class UserInfo {
         Object userInfo = request.getAttribute("userInfo");
         List <User> users = service.queryByUserInfo(account,pageSize,pageNum);
         Integer total = service.getTotal(account);
-        res.getUserList(200,(List) users,"获取成功", pageNum, pageSize,total);
+        res.setList(200,(List) users,"获取成功", pageNum, pageSize,total);
         return res;
     }
 

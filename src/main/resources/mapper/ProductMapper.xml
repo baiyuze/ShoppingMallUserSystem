@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruan.usersystem.mapper.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.ruan.usersystem.entity.Product">
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="keywords" jdbcType="VARCHAR" property="keywords"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+    </resultMap>
+    <sql id="productFiled"> id,cid, title, `desc`,keywords,img,pro_no As proNo,price,pv,status,add_time AS addTime </sql>
+
+    <select id="getProductList" resultType="com.ruan.usersystem.entity.Product">
+        SELECT
+        <include refid="productFiled" />
+        FROM product LIMIT ${(pageNum - 1) * pageSize}, ${pageSize}
+    </select >
+    <select id="getTotal" parameterType="String" resultType="Integer">
+        SELECT COUNT(id) as total FROM product
+    </select >
+</mapper>
