@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -21,9 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
-
-//RestController responseBody和controller的结合
-
 @RestController
 public class UserInfo {
     @Autowired
@@ -32,6 +30,7 @@ public class UserInfo {
     StringRedisTemplate redisTemplate;
     long time = 60 * 60 * 2 * 1000;
     private static Logger logger = LogManager.getLogger(UserInfo.class.getName());
+
     /***
      * 注册
      * @param person
