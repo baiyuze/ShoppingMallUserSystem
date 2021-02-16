@@ -1,16 +1,6 @@
 package com.ruan.usersystem.entity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigDecimal;
-// import javax.validation.constraints.NotEmpty;
 
-
-@Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class test {
     private Integer id;
     private Integer cid;
 
@@ -19,17 +9,12 @@ public class Product {
     private String pro_no;
     private String keywords;
     private String img;
-    private BigDecimal price;
+    private Float price;
     private String desc;
     private Integer pv;
     private Integer status;
-    private Long add_time;
+    private Integer add_time;
 
-    public Product() {};
-
-    /**
-     * 获取Id
-     * */
     public Integer getId() {
         return id;
     }
@@ -37,9 +22,7 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
-    /**
-     * 获取Id
-     * */
+
     public Integer getCid() {
         return cid;
     }
@@ -48,9 +31,6 @@ public class Product {
         this.cid = cid;
     }
 
-    /**
-     * 获取Id
-     * */
     public String getTitle() {
         return title;
     }
@@ -59,9 +39,6 @@ public class Product {
         this.title = title;
     }
 
-    /**
-     * 获取Id
-     * */
     public String getPro_no() {
         return pro_no;
     }
@@ -70,9 +47,6 @@ public class Product {
         this.pro_no = pro_no;
     }
 
-    /**
-     * 获取Id
-     * */
     public String getKeywords() {
         return keywords;
     }
@@ -81,9 +55,6 @@ public class Product {
         this.keywords = keywords;
     }
 
-    /**
-     * 获取Id
-     * */
     public String getImg() {
         return img;
     }
@@ -92,20 +63,14 @@ public class Product {
         this.img = img;
     }
 
-    /**
-     * 获取Id
-     * */
-    public BigDecimal getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setImg(BigDecimal price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    /**
-     * 获取Id
-     * */
     public String getDesc() {
         return desc;
     }
@@ -114,9 +79,6 @@ public class Product {
         this.desc = desc;
     }
 
-    /**
-     * 获取Id
-     * */
     public Integer getPv() {
         return pv;
     }
@@ -125,9 +87,6 @@ public class Product {
         this.pv = pv;
     }
 
-    /**
-     * 获取Id
-     * */
     public Integer getStatus() {
         return status;
     }
@@ -136,14 +95,11 @@ public class Product {
         this.status = status;
     }
 
-    /**
-     * 获取Id
-     * */
-    public Long getAdd_time() {
+    public Integer getAdd_time() {
         return add_time;
     }
 
-    public void setAdd_time(Long add_time) {
+    public void setAdd_time(Integer add_time) {
         this.add_time = add_time;
     }
 }

@@ -6,6 +6,10 @@
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="keywords" jdbcType="VARCHAR" property="keywords"/>
         <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="pv" jdbcType="INTEGER" property="pv"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="cid" jdbcType="INTEGER" property="cid"/>
     </resultMap>
     <sql id="productFiled"> id,cid, title, `desc`,keywords,img,pro_no As proNo,price,pv,status,add_time AS addTime </sql>
 
@@ -17,4 +21,9 @@
     <select id="getTotal" parameterType="String" resultType="Integer">
         SELECT COUNT(id) as total FROM product
     </select >
+
+    <insert id="insertData" parameterType="hashmap">
+        INSERT INTO product(`title`, `keywords`, `img`, `desc`, `price`, `pv`, `status`, `pro_no`, `add_time`)
+         VALUES(#{title},#{keywords},#{img},#{desc},#{price}, #{pv}, #{status}, #{pro_no},#{add_time})
+    </insert >
 </mapper>

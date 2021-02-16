@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProductMapper {
     List<Product> getProductList(@Param("pageSize") int pageSize, @Param("pageNum") int pageNum);
     Integer getTotal();
+    Integer insertData(Product product);
 }

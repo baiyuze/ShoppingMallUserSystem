@@ -23,4 +23,8 @@ public class ProductServiceImpl implements ProductService {
         Integer total = productMapper.getTotal();
         return total;
     }
+
+    public Integer insertData(Product product) {
+        return productMapper.insertData(product);
+    }
 }
